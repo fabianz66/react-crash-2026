@@ -9,7 +9,9 @@ const JobListings = ({ isHome = false }) => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch('http://localhost:8000/jobs');
+        const apiUrl = isHome ? '/api/jobs?_per_page=3' : '/api/jobs';
+        const response = await fetch(apiUrl);
+        console.log('API response status:', response);
         const data = await response.json();
         setJobs(data);
       } catch (error) {
@@ -21,7 +23,9 @@ const JobListings = ({ isHome = false }) => {
     fetchJobs();
   }, []);
 
+  console.log('Fetched jobs:', jobs);
   const recentJobs = isHome ? jobs?.slice(0, 3) : jobs;
+  
   return (
     <section className="bg-slate-50 px-4 py-12">
       <div className="container-xl lg:container m-auto">
