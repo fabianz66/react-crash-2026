@@ -1,10 +1,27 @@
+import {useState, useEffect } from 'react'
 import JobListing from './JobListing'
-import jobsData from '../jobs.json'
+import Spinner from './Spinner';
+
 
 const JobListings = ({ isHome = false }) => {
-  const recentJobs = isHome ? jobsData.jobs.slice(0, 3) : jobsData.jobs;
-  console.log(recentJobs);
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/jobs');
+        const data = await response.json();
+        setJobs(data);
+      } catch (error) {
+        console.error('Error fetching jobs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJobs();
+  }, []);
 
+  const recentJobs = isHome ? jobs?.slice(0, 3) : jobs;
   return (
     <section className="bg-slate-50 px-4 py-12">
       <div className="container-xl lg:container m-auto">
@@ -12,9 +29,13 @@ const JobListings = ({ isHome = false }) => {
           Browse Jobs
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {recentJobs.map((job) => (
-            <JobListing key={job.id} job={job} />
-          ))}
+          { loading ? (
+            <Spinner />
+          ) : (
+            recentJobs.map((job) => (
+              <JobListing key={job.id} job={job} />
+            ))
+          )}
         </div>
       </div>
     </section>
