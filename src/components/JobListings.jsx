@@ -1,9 +1,9 @@
 import JobListing from './JobListing'
 import jobsData from '../jobs.json'
 
-const JobListings = () => {
-  const recentJobs = jobsData.jobs.slice(0, 3)
-  console.log(recentJobs)
+const JobListings = ({ isHome = false }) => {
+  const recentJobs = isHome ? jobsData.jobs.slice(0, 3) : jobsData.jobs;
+  console.log(recentJobs);
 
   return (
     <section className="bg-slate-50 px-4 py-12">

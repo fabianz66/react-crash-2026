@@ -1,19 +1,23 @@
-import Navbar from './components/Navbar.jsx'
-import Hero from './components/Hero.jsx'
-import HomeCards from './components/HomeCards.jsx'
-import JobListings from './components/JobListings.jsx'
-import ViewAllJobs from './components/ViewAllJobs.jsx'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage.jsx'
+import JobsPage from './pages/JobsPage.jsx'
+import JobPage from './pages/JobPage.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx'
+import MainLayout from './layouts/MainLayout.tsx'
 
 function App() {
-
   return (
-    <>
-      <Navbar />
-      <Hero title="Cracking the React Framework" subtitle="The ultimate guide to mastering modern React development in 2026." />
-      <HomeCards />
-      <JobListings />
-      <ViewAllJobs />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/jobs" element={<JobsPage />} />
+          <Route path="/jobs/:id" element={<JobPage />} />
+          {/* Catch all other routes */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </Router>
   )
 }
 
